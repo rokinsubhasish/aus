@@ -1,17 +1,5 @@
 trigger: none
 
-resources:
-  pipelines:
-    - pipeline: master-deploy
-      source: Core/deploy_dev
-      trigger:
-        branches:
-          include:
-            - master
-
-pool:
-  name: "SaaS-$(ENVIRONMENT)"
-
 schedules:
   - cron: "0 5 * * 1-5"
     displayName: Daily E2E Regression Test
