@@ -25,7 +25,7 @@ jobs:
 
       # Build Docker Image
       - name: Build Regression Docker Image
-        run: docker build --pull -t regression:latest
+        run: docker build --pull -t regression:latest .
 
         # Run Docker Container
       - name: Run tests in Docker
