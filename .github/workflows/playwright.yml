@@ -2,8 +2,8 @@ name: Playwright Tests
 
 on:
   workflow_dispatch: # Allows manual triggering
-  schedule:
-    - cron: "*/5 * * * *" # Runs every 5 minutes
+  # schedule:
+  #   - cron: "*/5 * * * *" # Runs every 5 minutes
   push:
     branches: [main, master]
 
@@ -62,3 +62,13 @@ jobs:
           name: playwright-report
           path: PlaywrightTestResults/
           retention-days: 7 # Reduce retention days to save storage
+
+      
+      # Notify Teams Channel
+      - name: Notify Teams Channel
+        if: ${{ always() }} # Always run this step
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }} # Pass the webhook URL as a secret
+        run: |
+          MESSAGE="Playwright Tests have completed. Check the results in the GitHub Actions artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -H "Content-Type: application/json" -d "{\"text\": \"${MESSAGE}\"}" $TEAMS_WEBHOOK_URL
