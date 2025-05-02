@@ -1,10 +1,10 @@
 name: Playwright Tests
 on:
-workflow_dispatch: # Allows manual triggering
-  schedule:
-    - cron: "*/5 * * * *" # Runs every 5 minutes
-  # push:
-  #   branches: [ main, master ]
+# workflow_dispatch: # Allows manual triggering
+#   schedule:
+#     - cron: "*/5 * * * *" # Runs every 5 minutes
+  push:
+    branches: [ main, master ]
   # pull_request:
   #   branches: [ main, master ]
 jobs:
