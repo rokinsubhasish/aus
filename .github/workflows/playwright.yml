@@ -65,7 +65,7 @@ jobs:
 
       
       # Notify Teams Channel
-      - name: Notify Teams Channel
+      - name: Notify Discord Channel
         if: ${{ always() }} # Always run this step
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }} # Pass the webhook URL as a secret
