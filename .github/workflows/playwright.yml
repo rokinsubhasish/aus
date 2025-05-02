@@ -68,7 +68,7 @@ jobs:
       - name: Notify Discord Channel
         if: ${{ always() }} # Always run this step
         env:
-          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }} # Pass the webhook URL as a secret
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }} # Pass the webhook URL as a secret
         run: |
           MESSAGE="Playwright Tests have completed. Check the results in the GitHub Actions artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -H "Content-Type: application/json" -d "{\"text\": \"${MESSAGE}\"}" $TEAMS_WEBHOOK_URL
+          curl -H "Content-Type: application/json" -d "{\"text\": \"${MESSAGE}\"}" $DISCORD_WEBHOOK_URL
