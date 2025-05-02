@@ -35,7 +35,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/PlaywrightTestResults
           docker run --name core-e2e-tests \
             regression:latest || exit_code=$?
-          docker cp core-e2e-tests:/playwright-report-all ${{ github.workspace }}/PlaywrightTestResults
+          docker cp core-e2e-tests:/regression/playwright-report-all ${{ github.workspace }}/PlaywrightTestResults
           ls ${{ github.workspace }}/PlaywrightTestResults
           docker rm core-e2e-tests
           if [ -n "${exit_code:-}" ]; then
