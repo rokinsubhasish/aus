@@ -22,18 +22,37 @@ jobs:
         with:
           node-version: lts/*
           cache: 'npm' # Enable caching for npm dependencies
+          
+      # Build Docker Image
+      - name: Build Regression Docker Image
+        run: docker build --pull -t regression:latest ./aus
 
-      # Install dependencies with caching
-      - name: Install dependencies
-        run: npm ci
+        # Run Docker Container
+      - name: Run tests in Docker
+        run: |
+          set -euo pipefail
+          docker rm core-e2e-tests || echo "no container from previous run to clean up - will continue"
+          mkdir -p ${{ github.workspace }}/PlaywrightTestResults
+          docker run --name core-e2e-tests \
+            regression:latest || exit_code=$?
+          docker cp core-e2e-tests:/playwright-report-all ${{ github.workspace }}/PlaywrightTestResults
+          ls ${{ github.workspace }}/PlaywrightTestResults
+          docker rm core-e2e-tests
+          if [ -n "${exit_code:-}" ]; then
+            exit $exit_code
+          fi
 
-      # Install Playwright Browsers
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      # # Install dependencies with caching
+      # - name: Install dependencies
+      #   run: npm ci
 
-      # Run Playwright tests
-      - name: Run Playwright Tests
-        run: npx playwright test --reporter=dot # Use a lightweight reporter to speed up output
+      # # Install Playwright Browsers
+      # - name: Install Playwright Browsers
+      #   run: npx playwright install --with-deps
+
+      # # Run Playwright tests
+      # - name: Run Playwright Tests
+      #   run: npx playwright test --reporter=html # Use a lightweight reporter to speed up output
 
       # Upload Playwright report as an artifact
       - name: Upload Playwright Report
@@ -41,5 +60,5 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
-          path: playwright-report/
+          path: PlaywrightTestResults/
           retention-days: 7 # Reduce retention days to save storage
