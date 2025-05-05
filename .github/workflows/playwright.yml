@@ -3,7 +3,7 @@ name: Playwright Tests
 on:
   workflow_dispatch: # Allows manual triggering
   schedule:
-    - cron: "*/15 * * * *" # Runs every 15 minutes
+    - cron: "*/30 * * * *" # Runs every 15 minutes
   push:
     branches: [main, master]
 
