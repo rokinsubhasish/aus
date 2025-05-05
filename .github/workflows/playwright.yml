@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm' # Enable caching for npm dependencies
+          cache: "npm" # Enable caching for npm dependencies
 
       # Build Docker Image
       - name: Build Regression Docker Image
@@ -63,12 +63,13 @@ jobs:
           path: PlaywrightTestResults/
           retention-days: 7 # Reduce retention days to save storage
 
-      
-      # Notify Teams Channel
+      # Notify Discord Channel
       - name: Notify Discord Channel
         if: ${{ always() }} # Always run this step
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }} # Pass the webhook URL as a secret
         run: |
-          MESSAGE="Playwright Tests have completed. Check the results in the GitHub Actions artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl -H "Content-Type: application/json" -d "{\"text\": \"${MESSAGE}\"}" $DISCORD_WEBHOOK_URL
+          curl --request POST \
+            --header "Content-Type: application/json" \
+            --data "{\"content\": \"Playwright Tests have completed. Check the results in the GitHub Actions artifacts: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+            $DISCORD_WEBHOOK_URL
