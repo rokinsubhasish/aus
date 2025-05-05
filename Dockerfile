@@ -9,6 +9,7 @@ COPY ./eslint.config.mjs ./eslint.config.mjs
 COPY ./tsconfig.json ./tsconfig.json
 COPY ./entrypoint.sh ./entrypoint.sh
 COPY ./tests ./tests
+COPY ./pages ./pages
 
 RUN mkdir ./playwright-report-all
 
